@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <title>Pizza Cart</title>
+
+</head>
+    <link rel="stylesheet" type="text/css" href="pizza.css"/>
+<body>
+
+    <div class= 'container' x-data = " {cartDisplay: false, 
+        pepTot: 0.00,
+        mexicanTot: 0.00,
+        cheeseTot: 0.00,
+        vegTot:0.00,
+        seafoodTot: 0.00,
+        pepQty: 0,
+        mexQty: 0,
+        cheeseQty: 0,
+        vegQty: 0,
+        seafoodQty: 0,
+        payNow: false,
+        amount: 0.00,
+        paymentMessage: '',
+
+        cartTot() {
+            return this.pepTot + this.mexicanTot + this.cheeseTot + this.vegTot + this.seafoodTot
+        },
+        itemsTot() {
+                return this.pepQty + this.mexQty + this.cheeseQty + this.vegQty + this.seafoodQty
+            },
+        buyPep () {
+            this.pepQty += 1;
+            this.pepTot += 59.99;
+                },
+        clearPep () {
+            if (this.pepQty > 0) {
+               this.pepQty -= 1;
+                this.pepTot -= 59.99;
+                }
+            },
+        buyMex () {
+            this.mexQty += 1;
+            this.mexicanTot += 59.99;
+                   },
+        clearMex () {
+            if (this.mexQty > 0) {
+                this.mexQty -= 1;
+                this.mexicanTot -= 59.99;
+                    }
+            }, 
+                        
+        buyCheese () {
+            this.cheeseQty += 1;
+            this.cheeseTot += 59.99;
+                    },
+        clearCheese () {
+            if (this.cheeseQty > 0) {
+                this.cheeseQty -= 1;
+                this.cheeseTot -= 59.99;
+                }
+                },
+                
+        buySeaf () {
+            this.seafoodQty += 1;
+            this.seafoodTot += 59.99;
+                  },
+        clearSeaf () {
+            if (this.seafoodQty > 0) {
+                this.seafoodQty -= 1;
+                this.seafoodTot -= 59.99;
+                        }
+                },
+                 
+        buyVeg () {
+            this.vegQty += 1;
+            this.vegTot += 59.99;
+                    },
+        clearVeg () {
+            if (this.vegQty > 0) {
+            this.vegQty -= 1;
+            this.vegTot -= 59.99;
+                    }
+                },
+        
+        makePayment () {
+            if (!this.amount) {
+                this.paymentMessage = 'No amount entered!'
+                } 
+                
+                if (this.amount >= this.cartTot()) {  
+                    this.payNow = false;
+                    this.paymentMessage = 'Payment successful!'
+
+                    setTimeout (() => {
+                        this.clearCart()
+                    }, 3000);
+                  
+                } else {
+                    this.paymentMessage = 'Payment failed!'
+                    }
+                },
+        clearCart () {
+            this.pepTot = 0;
+            this.mexicanTot = 0;
+            this.cheeseTot = 0;
+            this.vegTot = 0;
+            this.seafoodTot = 0;
+            this.pepQty = 0;
+            this.mexQty = 0;
+            this.cheeseQty = 0;
+            this.vegQty = 0;
+            this.seafoodQty = 0;
+            this.pizzaQty = 0;
+        }   
+    }">
+
+    <!-- 'this' refers to the values in the x-data component  -->
+
+    <div class = 'head' id = 'ht'>
+        <h1 class = 'header'>Perfect Pizza</h1>
+        <div>
+            <button @click = 'cartDisplay = true; heightChange()' class = 'btn1'>Show cart</button>
+                <strong x-show = 'itemsTot() > 0' class = 'span'>
+                    <span x-text = 'itemsTot()'></span>
+                </strong>
+        </div>
+
+        <div class = 'cart-cont'>
+        <div class = 'cart' x-show = 'cartDisplay'>
+            <div>
+                <button @click = 'cartDisplay = false; heightDec()' class = 'btn'>Close cart</button>
+            </div>
+
+            <table class = 'tbl'>
+                <tr x-show = 'pepQty > 0'>
+                    <td class = 'row1'>Pepperoni</td>
+                    <td>
+                        <span x-text = 'pepQty'></span>
+                        <button @click = 'buyPep()' class = 'btn'> + </button>
+                        <button @click = 'clearPep()' x-show = 'pepQty > 0' class = 'btn'> - </button>
+                    </td>
+                    <td>
+                    R<span x-text = 'pepTot.toFixed(2)'></span>
+                    </td>
+                </tr>
+                <tr x-show = 'mexQty > 0'>
+                    <td class = 'row1'>Mexican</td>
+                    <td>
+                        <span x-text = 'mexQty'></span>
+                        <button @click = 'buyMex()' class = 'btn'> + </button>
+                        <button @click = 'clearMex()' x-show = 'mexQty > 0' class = 'btn'> - </button>
+                    </td>
+                    <td>
+                    R<span x-text = 'mexicanTot.toFixed(2)'></span>
+                    </td>
+                </tr>
+                <tr x-show = 'cheeseQty > 0'>
+                    <td class = 'row1'>Cheese</td>
+                    <td>
+                        <span x-text = 'cheeseQty'></span>
+                        <button @click = 'buyCheese()' class = 'btn'> + </button>
+                        <button @click = 'clearCheese()' x-show = 'cheeseQty > 0' class = 'btn'> - </button>
+                    </td>
+                    <td>
+                    R<span x-text = 'cheeseTot.toFixed(2)'></span>
+                    </td>
+                </tr>
+                <tr x-show = 'seafoodQty > 0'>
+                    <td class = 'row1'>Seafood</td>
+                    <td>
+                        <span x-text = 'seafoodQty'></span>
+                        <button @click = 'buySeaf()' class = 'btn'> + </button>
+                        <button @click = 'clearSeaf()' class = 'btn'> - </button>
+                    </td>
+                    <td>
+                    R<span x-text = 'seafoodTot.toFixed(2)'></span>
+                    </td>
+                </tr>
+                <tr x-show = 'vegQty > 0'>
+                    <td class = 'row1'>Vegetarian</td>
+                    <td>
+                        <span x-text = 'vegQty'></span>
+                        <button @click = 'buyVeg()' class = 'btn'> + </button>
+                        <button @click = 'clearVeg()' class = 'btn'> - </button>
+                    </td>
+                    <td>
+                    R<span x-text = 'vegTot.toFixed(2)'></span>
+                    </td>
+                </tr>
+                <tr x-show = 'itemsTot() > 0'>
+                    <td colspan = '2' class = 'row1'>Total</td>
+                    <td>
+                        R<span x-text = 'cartTot().toFixed(2)'></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan = '2'>
+                        <div x-show = 'payNow'>
+                             <div class = 'message' x-text = 'paymentMessage'>Message...</div>
+                                <div>
+                                    <label for = ''>Payment amount</label>
+                                    <input class = 'input' type = 'number' placeholder = 'Payment amount' x-model = 'amount'>
+                                    <button @click = 'makePayment()' class = 'btn'>Pay now</button>
+                            </div>  
+                        </div>
+                    </td>
+                          
+                    <td>
+                        <button @click = 'payNow = true' x-show = '!payNow' class = 'btn'>Pay</button>   
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+    
+    <div class= 'pizzas'>
+
+            <div class= "pizza1">
+                <img src="./1.jpg" alt = "Oops, no image found!" class= 'center'> 
+                <div>PEPPERONI</div>
+                <div style=" padding:1em">Medium Pepperoni pizza with 3 toppings, 2 or less meat topping, 3 or less other toppings.</div>
+                <div style=" padding:1em">Medium: R59.99</div>
+                <button @click = 'buyPep()' class = 'btn'>Order</button>
+            </div> 
+
+            <div class=" pizza2">
+                <img src= "./2.jpg" alt="Oops, image not found." class="center">
+                    <div>MEXICAN</div>    
+                    <div style=" padding:1em">Medium Mexican pizza with 3 toppings max, 3 meat toppings max, 3 or less other toppings.</div>
+                    <div style=" padding:1em">Medium: R59.99</div>
+                    <button @click = 'buyMex()' class = 'btn'>Order</button>
+            </div>
+
+            <div class= "pizza3">
+                <img src= "./3.jpg" alt="Oops, image not found." class="center">
+                <div>CHEESE</div>    
+                <div style=" padding:1em">Medium Cheese pizza with 3 toppings, 1 meat topping, 3 or less other toppings.</div>   
+                <div style=" padding:1em">Medium: R59.99</div> 
+                <button @click = 'buyCheese()' class = 'btn'>Order</button>         
+            </div>
+
+            <div class= "pizza4">
+                <img src= "./6.jpg" alt="Oops, image not found." class="center">
+                <div>SEAFOOD</div>    
+                <div style=" padding:1em">Medium Seafood pizza with 3 toppings, 1 meat topping, 3 or less other toppings.</div>  
+                <div style=" padding:1em">Medium: R59.99</div> 
+                <button @click = 'buySeaf()' class = 'btn'>Order</button>       
+            </div>
+
+            <div class= "pizza5">
+                <img src= "./5.jpg" alt="Oops, image not found." class="center">
+                <div>VEGETARIAN</div>    
+                <div style=" padding:1em">Medium Vegetarian pizza with 3 toppings, 1 meat topping, 3 or less other toppings.</div> 
+                <div style=" padding:1em">Medium: R59.99</div> 
+                <button @click = 'buyVeg()' class = 'btn'>Order</button>      
+            </div>
+            </div>
+
+            <div class= "footer">
+                <div style= 'padding: 1em'>Contact us at: (021)-541-1000.</div>
+                <div style= 'padding: 1em'>twitter/fb/insta: @perfectpizza</div>
+                <div style= 'padding: 1em'>Address: Pizza Plaza, Dough Road, Base Town</div>
+            </div>
+    </div>
+</div>
+
+<script>
+    function heightChange() {
+        document.getElementById('ht').style.height = '25em';
+            } 
+    function heightDec() {
+        document.getElementById('ht').style.height = '16em';
+            }
+</script>
+
+</body>
+</html>
